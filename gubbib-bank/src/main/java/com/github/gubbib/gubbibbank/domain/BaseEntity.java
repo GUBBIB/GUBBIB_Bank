@@ -37,7 +37,7 @@ public abstract class BaseEntity {
     private LocalDateTime createdAt;
 
     @LastModifiedDate // DB에 업데이트 될 때마다 자동으로 현재시간을 넣어주는 어노테이션
-    private LocalDateTime lastModifiedAt;
+    private LocalDateTime updatedAt;
 
     private LocalDateTime deletedAt;
 
