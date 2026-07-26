@@ -1,1 +1,32 @@
-spring.application.name=gubbib-bank
+server:
+  port: 8081
+spring:
+  application:
+    name: GUBBIB_Bank
+  profiles:
+    active: local
+
+  datasource:
+    url: jdbc:oracle:thin:@//localhost:1522/FREEPDB1
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  jpa:
+    open-in-view: false
+    show_sql: false
+
+    hibernate:
+      ddl-auto: validate
+
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+
+logging:
+  level:
+    root: INFO
+
+    com.github.gubbib.gubbibbank: DEBUG
+
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
