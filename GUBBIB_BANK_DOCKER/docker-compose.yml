@@ -1,0 +1,27 @@
+services:
+  oracle:
+    image: gvenzl/oracle-free:23-slim
+    container_name: gubbibbank-oracle
+
+    restart: unless-stopped
+
+    ports:
+      - "1522:1521"
+      - "5501:5500"
+
+    environment:
+      ORACLE_PASSWORD: oracle
+      APP_USER: gubbibbank
+      APP_USER_PASSWORD: gubbib1234
+
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  oracle-data:
