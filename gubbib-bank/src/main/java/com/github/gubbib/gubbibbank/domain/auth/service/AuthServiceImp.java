@@ -59,6 +59,7 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
+        log.info("로그인 요청 - email={}", request.email());
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -66,10 +67,12 @@ public class AuthServiceImp implements AuthService {
                         request.password()
                 )
         );
+        log.debug("Spring Security 인증 성공 - email={}", request.email());
 
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
         Member m = user.getMember();
+        log.info("로그인 완료 - memberId={}, email={}", m.getId(), m.getEmail());
 
         return LoginResponse.from(m);
     }
