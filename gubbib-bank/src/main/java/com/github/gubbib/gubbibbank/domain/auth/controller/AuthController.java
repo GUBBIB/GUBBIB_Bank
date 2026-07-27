@@ -1,5 +1,6 @@
 package com.github.gubbib.gubbibbank.domain.auth.controller;
 
+import com.github.gubbib.gubbibbank.domain.auth.dto.LoginRequest;
 import com.github.gubbib.gubbibbank.domain.auth.dto.LoginResponse;
 import com.github.gubbib.gubbibbank.domain.auth.dto.SignupRequest;
 import com.github.gubbib.gubbibbank.domain.auth.service.AuthService;
@@ -27,5 +28,12 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(authService.signup(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(
+            @Valid @RequestBody LoginRequest request
+    ){
+        return ResponseEntity.ok(authService.login(request));
     }
 }
