@@ -1,6 +1,6 @@
-package com.github.gubbib.gubbibbank.domain.member.dto;
+package com.github.gubbib.gubbibbank.domain.auth.dto;
 
-public record MemberSignupRequest(
+public record SignupRequest(
         String email,
         String password,
         String name,

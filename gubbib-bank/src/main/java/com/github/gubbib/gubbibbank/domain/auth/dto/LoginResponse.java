@@ -1,4 +1,4 @@
-package com.github.gubbib.gubbibbank.domain.member.dto;
+package com.github.gubbib.gubbibbank.domain.auth.dto;
 
 import com.github.gubbib.gubbibbank.domain.member.entity.Member;
 import com.github.gubbib.gubbibbank.domain.member.entity.MemberStatus;
@@ -6,7 +6,7 @@ import com.github.gubbib.gubbibbank.domain.member.entity.Role;
 import lombok.Builder;
 
 @Builder
-public record MemberResponse(
+public record LoginResponse(
         Long id,
         String email,
         String name,
@@ -15,8 +15,8 @@ public record MemberResponse(
         MemberStatus status
 
 ) {
-    public static MemberResponse from(Member m){
-        return MemberResponse.builder()
+    public static LoginResponse from(Member m){
+        return LoginResponse.builder()
                 .id(m.getId())
                 .email(m.getEmail())
                 .name(m.getName())
