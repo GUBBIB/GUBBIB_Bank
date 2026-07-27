@@ -1,8 +1,9 @@
 package com.github.gubbib.gubbibbank.domain.member.service;
 
-import com.github.gubbib.gubbibbank.domain.member.dto.MemberResponse;
-import com.github.gubbib.gubbibbank.domain.member.dto.MemberSignupRequest;
+import com.github.gubbib.gubbibbank.domain.auth.dto.LoginResponse;
+import com.github.gubbib.gubbibbank.domain.auth.dto.SignupRequest;
 import com.github.gubbib.gubbibbank.domain.member.entity.Member;
+import com.github.gubbib.gubbibbank.domain.member.entity.MemberStatus;
 import com.github.gubbib.gubbibbank.domain.member.repository.MemberRepository;
 import com.github.gubbib.gubbibbank.exception.BusinessException;
 import com.github.gubbib.gubbibbank.exception.ErrorCode;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -21,29 +24,20 @@ public class MemberServiceImp implements MemberService {
     private final MemberRepository memberRepository;
 
     @Override
-    @Transactional
-    public MemberResponse signup(MemberSignupRequest request) {
+    public boolean existsMember(String email) {
+        return  memberRepository.existsByEmail(email);
+    }
 
-        log.debug("회원가입 요청: email = {}", request.email());
+    @Override
+    public Member register(Member member) {
+        return memberRepository.save(member);
+    }
 
-        if(memberRepository.existsByEmail(request.email())){
-            log.debug("이미 존재하는 이메일: {}", request.email());
-            throw new BusinessException(ErrorCode.MEMBER_ALREADY_EXISTS);
-        }
-
-        Member m = Member.create(
-                request.email(),
-                request.password(),
-                request.name(),
-                request.phone()
-        );
-
-        memberRepository.save(m);
-
-        log.debug("회원가입 완료: id={}, email={}",
-                m.getId(),
-                m.getEmail());
-
-        return MemberResponse.from(m);
+    @Override
+    public Member findActiveMemberByEmail(String email) {
+        return memberRepository
+                .findByEmailAndStatus(email, MemberStatus.ACTIVE)
+                .orElseThrow(() ->
+                        new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
     }
 }

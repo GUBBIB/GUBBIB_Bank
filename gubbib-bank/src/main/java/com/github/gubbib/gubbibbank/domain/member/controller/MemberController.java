@@ -1,7 +1,7 @@
 package com.github.gubbib.gubbibbank.domain.member.controller;
 
-import com.github.gubbib.gubbibbank.domain.member.dto.MemberResponse;
-import com.github.gubbib.gubbibbank.domain.member.dto.MemberSignupRequest;
+import com.github.gubbib.gubbibbank.domain.auth.dto.LoginResponse;
+import com.github.gubbib.gubbibbank.domain.auth.dto.SignupRequest;
 import com.github.gubbib.gubbibbank.domain.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,5 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<MemberResponse> signup(
-            @Valid @RequestBody MemberSignupRequest request
-    ){
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(memberService.signup(request));
-    }
+
 }
