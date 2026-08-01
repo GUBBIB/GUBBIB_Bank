@@ -30,3 +30,6 @@ logging:
 
     org.hibernate.SQL: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
+
+jwt:
+  access-token-expiration: 1800000 # 단위 : ms
