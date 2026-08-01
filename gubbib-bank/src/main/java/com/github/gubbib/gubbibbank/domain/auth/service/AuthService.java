@@ -6,6 +6,6 @@ import com.github.gubbib.gubbibbank.domain.auth.dto.SignupRequest;
 
 public interface AuthService {
 
-    LoginResponse signup(SignupRequest request);
+    void signup(SignupRequest request);
     LoginResponse login(LoginRequest request);
 }

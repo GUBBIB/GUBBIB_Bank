@@ -8,6 +8,7 @@ import com.github.gubbib.gubbibbank.domain.member.service.MemberService;
 import com.github.gubbib.gubbibbank.exception.BusinessException;
 import com.github.gubbib.gubbibbank.exception.ErrorCode;
 import com.github.gubbib.gubbibbank.security.details.CustomUserDetails;
+import com.github.gubbib.gubbibbank.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,11 @@ public class AuthServiceImp implements AuthService {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
 
     @Override
     @Transactional
-    public LoginResponse signup(SignupRequest request) {
+    public void signup(SignupRequest request) {
 
         log.debug("회원가입 요청: email = {}", request.email());
 
@@ -53,8 +55,6 @@ public class AuthServiceImp implements AuthService {
         log.debug("회원가입 완료: id={}, email={}",
                 m.getId(),
                 m.getEmail());
-
-        return LoginResponse.from(m);
     }
 
     @Override
@@ -74,6 +74,10 @@ public class AuthServiceImp implements AuthService {
         Member m = user.getMember();
         log.info("로그인 완료 - memberId={}, email={}", m.getId(), m.getEmail());
 
-        return LoginResponse.from(m);
-    }
+        String accessToken = jwtProvider.generateAccessToken(m);
+        long expiresIn = jwtProvider.getAccessTokenExpiration();
+
+        log.debug("AccessToken 생성: accessToken={}, expiresIn={}",  accessToken, expiresIn);
+
+        return LoginResponse.from(m, accessToken, expiresIn);    }
 }
