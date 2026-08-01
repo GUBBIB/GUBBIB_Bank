@@ -22,12 +22,14 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<LoginResponse> signup(
+    public ResponseEntity<Void> signup(
             @Valid @RequestBody SignupRequest request
     ){
+        authService.signup(request);
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(authService.signup(request));
+                .build();
     }
 
     @PostMapping("/login")
