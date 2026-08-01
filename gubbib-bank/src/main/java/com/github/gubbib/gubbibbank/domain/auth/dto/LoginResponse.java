@@ -12,10 +12,13 @@ public record LoginResponse(
         String name,
         String phone,
         Role role,
-        MemberStatus status
+        MemberStatus status,
+
+        String accessToken,
+        long expiresIn
 
 ) {
-    public static LoginResponse from(Member m){
+    public static LoginResponse from(Member m, String accessToken, long expiresIn) {
         return LoginResponse.builder()
                 .id(m.getId())
                 .email(m.getEmail())
@@ -23,6 +26,8 @@ public record LoginResponse(
                 .phone(m.getPhone())
                 .role(m.getRole())
                 .status(m.getStatus())
+                .accessToken(accessToken)
+                .expiresIn(expiresIn)
                 .build();
     }
 }
