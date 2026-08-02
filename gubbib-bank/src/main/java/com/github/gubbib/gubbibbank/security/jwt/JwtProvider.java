@@ -57,10 +57,7 @@ public class JwtProvider {
         log.debug("JWT 검증 시작");
 
         try {
-            Jwts.parser()
-                    .verifyWith(secretKey)
-                    .build()
-                    .parseSignedClaims(token);
+            getClaims(token);
 
             log.debug("JWT 검증 성공");
 
@@ -82,16 +79,20 @@ public class JwtProvider {
     public String getEmail(String token){
         log.debug("JWT에서 이메일 추출 시작");
 
-        Claims claims = Jwts.parser()           // JWT 해석기를 만든다.
-                .verifyWith(secretKey)          // 이 키로 검증하도록 설정한다.
-                .build()                        // 해석기 완성
-                .parseSignedClaims(token)       // 토큰을 해석 + 서명 검증 + 만료 확인
-                .getPayload();                  // 검증된 Payload(Claims)를 가져온다.
+        Claims claims = getClaims(token);
 
         String email = claims.getSubject();
 
         log.debug("JWT에서 이메일 추출 완료 - email={}", email);
 
         return email;
+    }
+
+    private Claims getClaims(String token){
+        return Jwts.parser()           // JWT 해석기를 만든다.
+                .verifyWith(secretKey)          // 이 키로 검증하도록 설정한다.
+                .build()                        // 해석기 완성
+                .parseSignedClaims(token)       // 토큰을 해석 + 서명 검증 + 만료 확인
+                .getPayload();                  // 검증된 Payload(Claims)를 가져온다.
     }
 }
