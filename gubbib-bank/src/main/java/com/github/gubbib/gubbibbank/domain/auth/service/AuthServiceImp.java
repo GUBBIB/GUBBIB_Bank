@@ -79,5 +79,5 @@ public class AuthServiceImp implements AuthService {
 
         log.debug("AccessToken 생성: accessToken={}, expiresIn={}",  accessToken, expiresIn);
 
-        return LoginResponse.from(m, accessToken, expiresIn);    }
+        return LoginResponse.from(accessToken, expiresIn);    }
 }
